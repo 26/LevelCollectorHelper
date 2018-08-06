@@ -27,27 +27,13 @@
             var iBDiv = null;
             var span = null;
 
-            var buttonHolder = document.createElement('div');
-            buttonHolder.className = "flipthis-wrapper";
-
-            var initButton = document.createElement('a');
-
-            iBDiv = document.createElement('div');
-
-            if (colour == "green") {
-                iBDiv.className = "btn_small btn_green_white_innerfade lchhelper";
-            } else {
-                iBDiv.className = "btn_small btn_grey_white_innerfade lchhelper";
-            }
+            var buttonHolder = document.createElement('a');
+            buttonHolder.className = "btnv6_blue_blue_innerfade btn_details btn_small";
 
             span = document.createElement('span');
             span.innerHTML = text;
             span.className = "";
-            iBDiv.appendChild(span);
-
-            initButton.appendChild(iBDiv);
-
-            buttonHolder.appendChild(initButton);
+            buttonHolder.appendChild(span);
 
             var row = document.getElementsByClassName(place);
             row[0].appendChild(buttonHolder);
@@ -55,17 +41,16 @@
             this.setText = function(newText) {
                 span.innerHTML = newText;
             };
+            
             this.remove = function() {
                 buttonHolder.parentNode.removeChild(buttonHolder);
-                initButton.parentNode.removeChild(initButton);
-                iBDiv.parentNode.removeChild(iBDiv);
                 span.parentNode.removeChild(span);
             };
         }
 
         // Check if groupLevel is actually there
         if(groupLevel() != null) {
-            var helperButton = new Button("green", "Accept level " + groupLevel() + "+", "btnv6_lightblue_blue btn_details btn_small");
+            var helperButton = new Button("green", "Accept level " + groupLevel() + "+", "joinRequestManageButtons");
         }
 
         $J(".lchhelper").click(function(){ joinRequestsManage(); });

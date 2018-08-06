@@ -3,19 +3,19 @@
 // @version      1.0
 // @description  Tool to aid in the management of Level Collector groups
 // @author       xxmarijnw
-// @include		 *steamcommunity.com/groups/*/joinRequestsManage
-// @supportURL	 https://steamcommunity.com/profiles/76561198179914647
+// @include      *steamcommunity.com/groups/*/joinRequestsManage
+// @supportURL   https://steamcommunity.com/profiles/76561198179914647
 // @require      https://code.jquery.com/jquery-3.3.1.min.js
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-	var groups = ['level10collector','level20collector','level30collector','level40collector','level50collector','level60collector','level70collector','level80collector','level90collector','level100collector','level110collector','level120collector','level130collector','level140collector','level150collector','level160collector','level170collector','level180collector','level190collector','level200collector','leveI210collector','leveI220collector','leveI230collector','leveI240collector','leveI250collector','leveI260collector','leveI270collector','leveI280collector','leveI290collector','leveI300collector','level310coIIector','level320coIIector','level330coIIector','level340coIIector','level350coIIector','level360coIIector','level370coIIector','level380collector','level390collector','level400coIIector','IeveI410coIIector','IeveI420coIIector','IeveI430coIIector','IeveI440coIIector','IeveI450coIIector','IeveI460coIIector','IeveI470coIIector','IeveI480coIIector','IeveI490coIIector','IeveI500coIIector','IeveI510coIIector','level520coIIector','IeveI530coIIector','level540coIIector','level550coIIector','level560coIIector','level570coIIector','level580coIIector','level590coIIector','level600coIIector','level610colIector','level620colIector','level630colIector','level640colIector','level650colIector','level660colIector','level670colIector','level680colIector','level690colIector','level700colIector','level710colIector','level720colIector','level730colIector','level740colIector','level750colIector','level760colIector','level770colIector','level780colIector','level790colIector','level800colIector','level810coIIector','level820coIIector','level830coIIector','level840coIIector','level850coIIector','level860coIIector','level870coIIector','level880coIIector','level890coIIector','level900coIIector','level910coIIector','level920coIIector','level930coIIector','level940coIIector','level950coIIector','level960coIIector','level970coIIector','level980coIIector','level990coIIector','leveI1000coIIector'];
-	
-	var urlsegments = window.location.pathname.split('/');
-	var groupname = urlsegments[2];
-	
+    var groups = ['level10collector','level20collector','level30collector','level40collector','level50collector','level60collector','level70collector','level80collector','level90collector','level100collector','level110collector','level120collector','level130collector','level140collector','level150collector','level160collector','level170collector','level180collector','level190collector','level200collector','leveI210collector','leveI220collector','leveI230collector','leveI240collector','leveI250collector','leveI260collector','leveI270collector','leveI280collector','leveI290collector','leveI300collector','level310coIIector','level320coIIector','level330coIIector','level340coIIector','level350coIIector','level360coIIector','level370coIIector','level380collector','level390collector','level400coIIector','IeveI410coIIector','IeveI420coIIector','IeveI430coIIector','IeveI440coIIector','IeveI450coIIector','IeveI460coIIector','IeveI470coIIector','IeveI480coIIector','IeveI490coIIector','IeveI500coIIector','IeveI510coIIector','level520coIIector','IeveI530coIIector','level540coIIector','level550coIIector','level560coIIector','level570coIIector','level580coIIector','level590coIIector','level600coIIector','level610colIector','level620colIector','level630colIector','level640colIector','level650colIector','level660colIector','level670colIector','level680colIector','level690colIector','level700colIector','level710colIector','level720colIector','level730colIector','level740colIector','level750colIector','level760colIector','level770colIector','level780colIector','level790colIector','level800colIector','level810coIIector','level820coIIector','level830coIIector','level840coIIector','level850coIIector','level860coIIector','level870coIIector','level880coIIector','level890coIIector','level900coIIector','level910coIIector','level920coIIector','level930coIIector','level940coIIector','level950coIIector','level960coIIector','level970coIIector','level980coIIector','level990coIIector','leveI1000coIIector'];
+    
+    var urlsegments = window.location.pathname.split('/');
+    var groupname = urlsegments[2];
+    
     // Check whether the page the user is on right now is actually a level collectors page
     if(jQuery.inArray(groupname, groups) !== -1) {
         var apikey = ''; // ENTER STEAM API KEY HERE (https://steamcommunity.com/dev/apikey)
@@ -61,7 +61,7 @@
 
         // Automatically get the level of this group
         function groupLevel() {
-			var url = window.location.href;
+            var url = window.location.href;
             // Get the digits in that URL
             var groupLevel = url.match(/\d/g);
             return groupLevel.join("");
@@ -193,29 +193,29 @@
                         async: false
                     });
                 }
-				
-		Redirect();
+                
+                Redirect();
             }
         }
-		
-	function Redirect() {
-		// Get next item in the groups array
-        	var index = groups.indexOf(groupname);
-		if(index >= 0 && index < groups.length - 1) {
-			var nextItem = groups[index + 1];
-			
-			if (nextItem == null) {
-				// Just reload when nothing was found
-				location.reload();
-			} else {
-				// Redirect to the next group if it exists
-				window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage";
-			}
-		} else {
-			// Just reload when nothing was found
-			location.reload();
-		}
-	}
+        
+        function Redirect() {
+            // Get next item in the groups array
+            var index = groups.indexOf(groupname);
+            if(index >= 0 && index < groups.length - 1) {
+                var nextItem = groups[index + 1];
+            
+                if (nextItem == null) {
+                    // Just reload when nothing was found
+                    location.reload();
+                } else {
+                    // Redirect to the next group if it exists
+                    window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage";
+                }
+            } else {
+                // Just reload when nothing was found
+                location.reload();
+            }
+        }
 
         function joinRequestsManage() {
             helperButton.setText("Busy...");

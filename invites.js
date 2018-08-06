@@ -225,7 +225,7 @@
                 helperButton.setText("Getting level needed");
 
                 if(neededLevel < 10 || neededLevel > 1001 || neededLevel == null) {
-                    if(attempt =< 5) {
+                    if(attempt <= 5) {
                         console.log("Something went wrong getting group level, retrying... (" + attempt + " / 5)");
                         getNeededLevel();
                     } else {

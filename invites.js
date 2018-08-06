@@ -194,11 +194,11 @@
                     });
                 }
 				
-				redirect();
+		Redirect();
             }
         }
 		
-	function redirect() {
+	function Redirect() {
 		// Get next item in the groups array
         	var index = groups.indexOf(groupname);
 		if(index >= 0 && index < groups.length - 1) {

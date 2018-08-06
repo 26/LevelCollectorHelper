@@ -19,7 +19,15 @@
     // Check whether the page the user is on right now is actually a level collectors page
     if(jQuery.inArray(groupname, groups) !== -1) {
         
-            function Redirect() {
+        var apikey = ''; // ENTER STEAM API KEY HERE (https://steamcommunity.com/dev/apikey)
+
+        // Global vars
+        var debug = 0; // Used for debugging. Enable debugging by typing "debug = 1" (without the quotes) in the console
+        var approvedAccounts = []; // Empty on default
+        var deniedAccounts = []; // Empty on default
+        var ignoreDenyUsers = 1; // Variable to IGNORE or DENY users that don't meet the required level (deny means the user cannot request to join again for some time, ignore means the join request remains open) (1 = IGNORE, 0 = DENY)
+        
+        function Redirect() {
             // Get next item in the groups array
             var index = groups.indexOf(groupname);
             if(index >= 0 && index < groups.length - 1) {
@@ -41,14 +49,6 @@
         function Reload() {
             location.reload();
         }
-        
-        var apikey = ''; // ENTER STEAM API KEY HERE (https://steamcommunity.com/dev/apikey)
-
-        // Global vars
-        var debug = 0; // Used for debugging. Enable debugging by typing "debug = 1" (without the quotes) in the console
-        var approvedAccounts = []; // Empty on default
-        var deniedAccounts = []; // Empty on default
-        var ignoreDenyUsers = 1; // Variable to IGNORE or DENY users that don't meet the required level (deny means the user cannot request to join again for some time, ignore means the join request remains open) (1 = IGNORE, 0 = DENY)
 
         // Button source code from gemify.js by user SleepyAkubi on GitHub
         function Button(colour, text, place) {
@@ -225,6 +225,27 @@
             }
         }
         
+        function getNeededLevel() {
+            neededLevel = groupLevel();
+            attempt += 1;
+
+            helperButton.setText("Getting level needed");
+
+            if(neededLevel < 10 || neededLevel > 1001 || neededLevel == null) {
+                if(attempt <= 5) {
+                    console.log("Something went wrong getting group level, retrying... (" + attempt + " / 5)");
+                    getNeededLevel();
+                } else {
+                    helperButton.setText("Error getting required level");
+                    console.log("Something went wrong getting group level. Please refresh and retry manually.");
+
+                    Reload();
+
+                    throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
+                }
+            }
+        }
+        
         function joinRequestsManage() {
             helperButton.setText("Busy...");
 
@@ -233,27 +254,6 @@
             var attempt = 0;
 
             getNeededLevel();
-
-            function getNeededLevel() {
-                neededLevel = groupLevel();
-                attempt += 1;
-
-                helperButton.setText("Getting level needed");
-
-                if(neededLevel < 10 || neededLevel > 1001 || neededLevel == null) {
-                    if(attempt <= 5) {
-                        console.log("Something went wrong getting group level, retrying... (" + attempt + " / 5)");
-                        getNeededLevel();
-                    } else {
-                        helperButton.setText("Error getting required level");
-                        console.log("Something went wrong getting group level. Please refresh and retry manually.");
-                        
-                        Reload();
-                        
-                        throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
-                    }
-                }
-            }
 
             // Iterate over all users
             jQuery.each(iterate, function(index, item) {

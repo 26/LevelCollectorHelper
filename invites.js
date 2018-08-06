@@ -18,7 +18,6 @@
 
         // Global vars
         var debug = 0; // Used for debugging. Enable debugging by typing "debug = 1" (without the quotes) in the console
-        var g_requestURL = 'https://steamcommunity.com/groups/marijntg/joinRequestsManage'; // Request URL to which the POST must be send
         var approvedAccounts = []; // Empty on default
         var deniedAccounts = []; // Empty on default
         var ignoreDenyUsers = 1; // Variable to IGNORE or DENY users that don't meet the required level (deny means the user cannot request to join again for some time, ignore means the join request remains open) (1 = IGNORE, 0 = DENY)

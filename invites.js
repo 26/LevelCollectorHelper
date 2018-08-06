@@ -201,21 +201,21 @@
 	function redirect() {
 		// Get next item in the groups array
         	var index = groups.indexOf(groupname);
-			if(index >= 0 && index < groups.length - 1) {
-				var nextItem = groups[index + 1];
-				
-				if (nextItem == null) {
-					// Just reload when nothing was found
-					location.reload();
-				} else {
-					// Redirect to the next group if it exists
-					window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage";
-				}
-			} else {
+		if(index >= 0 && index < groups.length - 1) {
+			var nextItem = groups[index + 1];
+			
+			if (nextItem == null) {
 				// Just reload when nothing was found
 				location.reload();
+			} else {
+				// Redirect to the next group if it exists
+				window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage";
 			}
+		} else {
+			// Just reload when nothing was found
+			location.reload();
 		}
+	}
 
         function joinRequestsManage() {
             helperButton.setText("Busy...");

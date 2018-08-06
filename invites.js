@@ -28,7 +28,7 @@
             var span = null;
 
             var buttonHolder = document.createElement('a');
-            buttonHolder.className = "btnv6_blue_blue_innerfade btn_details btn_small";
+            buttonHolder.className = "btnv6_blue_blue_innerfade btn_details btn_small lchhelper";
 
             span = document.createElement('span');
             span.innerHTML = text;
@@ -36,7 +36,7 @@
             buttonHolder.appendChild(span);
 
             var row = document.getElementsByClassName(place);
-            row[0].appendChild(buttonHolder);
+            row[0].prepend(buttonHolder);
 
             this.setText = function(newText) {
                 span.innerHTML = newText;

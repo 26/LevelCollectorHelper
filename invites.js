@@ -18,6 +18,30 @@
     
     // Check whether the page the user is on right now is actually a level collectors page
     if(jQuery.inArray(groupname, groups) !== -1) {
+        
+            function Redirect() {
+            // Get next item in the groups array
+            var index = groups.indexOf(groupname);
+            if(index >= 0 && index < groups.length - 1) {
+                var nextItem = groups[index + 1];
+            
+                if (nextItem == null) {
+                    // Just reload when nothing was found
+                    location.reload();
+                } else {
+                    // Redirect to the next group if it exists
+                    window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage";
+                }
+            } else {
+                // Just reload when nothing was found
+                location.reload();
+            }
+        }
+        
+        function Reload() {
+            location.reload();
+        }
+        
         var apikey = ''; // ENTER STEAM API KEY HERE (https://steamcommunity.com/dev/apikey)
 
         // Global vars
@@ -83,6 +107,9 @@
                 // Array empty or does not exist
                 helperButton.setText("No join requests");
                 console.log("No join requests");
+                
+                Redirect();
+                
                 throw new Error("No join requests");
             }
 
@@ -198,25 +225,6 @@
             }
         }
         
-        function Redirect() {
-            // Get next item in the groups array
-            var index = groups.indexOf(groupname);
-            if(index >= 0 && index < groups.length - 1) {
-                var nextItem = groups[index + 1];
-            
-                if (nextItem == null) {
-                    // Just reload when nothing was found
-                    location.reload();
-                } else {
-                    // Redirect to the next group if it exists
-                    window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage";
-                }
-            } else {
-                // Just reload when nothing was found
-                location.reload();
-            }
-        }
-
         function joinRequestsManage() {
             helperButton.setText("Busy...");
 
@@ -239,6 +247,9 @@
                     } else {
                         helperButton.setText("Error getting required level");
                         console.log("Something went wrong getting group level. Please refresh and retry manually.");
+                        
+                        Reload();
+                        
                         throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
                     }
                 }

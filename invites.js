@@ -183,7 +183,7 @@
             };
 
             if(debug === 0) {
-                helperButton.setText("Sending request");
+                helperButton.setText("Sending requests");
 
                 // Approve users
                 $J.ajax({
@@ -229,6 +229,7 @@
                         console.log("Something went wrong getting group level, retrying... (" + attempt + " / 5)");
                         getNeededLevel();
                     } else {
+                        helperButton.setText("Error getting required level");
                         console.log("Something went wrong getting group level. Please refresh and retry manually.");
                         throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
                     }
@@ -237,6 +238,8 @@
 
             // Iterate over all users
             jQuery.each(iterate, function(index, item) {
+                helperButton.setText("Checking each user");
+                
                 // Get ID64 for this user
                 var id = convertID(item);
 

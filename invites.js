@@ -11,8 +11,10 @@
 (function() {
     'use strict';
 
+    // Var containing all the groups
     var groups = ['level10collector','level20collector','level30collector','level40collector','level50collector','level60collector','level70collector','level80collector','level90collector','level100collector','level110collector','level120collector','level130collector','level140collector','level150collector','level160collector','level170collector','level180collector','level190collector','level200collector','leveI210collector','leveI220collector','leveI230collector','leveI240collector','leveI250collector','leveI260collector','leveI270collector','leveI280collector','leveI290collector','leveI300collector','level310coIIector','level320coIIector','level330coIIector','level340coIIector','level350coIIector','level360coIIector','level370coIIector','level380collector','level390collector','level400coIIector','IeveI410coIIector','IeveI420coIIector','IeveI430coIIector','IeveI440coIIector','IeveI450coIIector','IeveI460coIIector','IeveI470coIIector','IeveI480coIIector','IeveI490coIIector','IeveI500coIIector','IeveI510coIIector','level520coIIector','IeveI530coIIector','level540coIIector','level550coIIector','level560coIIector','level570coIIector','level580coIIector','level590coIIector','level600coIIector','level610colIector','level620colIector','level630colIector','level640colIector','level650colIector','level660colIector','level670colIector','level680colIector','level690colIector','level700colIector','level710colIector','level720colIector','level730colIector','level740colIector','level750colIector','level760colIector','level770colIector','level780colIector','level790colIector','level800colIector','level810coIIector','level820coIIector','level830coIIector','level840coIIector','level850coIIector','level860coIIector','level870coIIector','level880coIIector','level890coIIector','level900coIIector','level910coIIector','level920coIIector','level930coIIector','level940coIIector','level950coIIector','level960coIIector','level970coIIector','level980coIIector','level990coIIector','leveI1000coIIector'];
 
+    // Simple function to split the URL in segments in order to get the group name
     var urlsegments = window.location.pathname.split('/');
     var groupname = urlsegments[2];
 
@@ -27,6 +29,7 @@
         var deniedAccounts = []; // Empty on default
         var ignoreDenyUsers = 1; // Variable to IGNORE or DENY users that don't meet the required level (deny means the user cannot request to join again for some time, ignore means the join request remains open) (1 = IGNORE, 0 = DENY)
 
+        // Function to get parameters (GET parameters) from the URL
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
                 sURLVariables = sPageURL.split('&'),
@@ -42,6 +45,7 @@
             }
         };
 
+        // Function to redirect you to the next Level Collectors group
         function Redirect() {
             // Get next item in the groups array
             var index = groups.indexOf(groupname);
@@ -61,24 +65,32 @@
             }
         }
 
+        // Reload
         function Reload() {
             location.reload();
         }
 
-        // Button source code from gemify.js by user SleepyAkubi on GitHub
+        // Button source code from gemify.js by user SleepyAkubi on GitHub (edited by me)
         function Button(colour, text, place) {
-            var iBDiv = null;
+            // Define span
             var span = null;
 
+            // Create new anchor element
             var buttonHolder = document.createElement('a');
+            // Give said element some colours
             buttonHolder.className = "btnv6_blue_blue_innerfade btn_details btn_small lchhelper";
 
+            // Create new span element
             span = document.createElement('span');
             span.innerHTML = text;
             span.className = "";
+            
+            // Append the span inside of the anchor
             buttonHolder.appendChild(span);
 
+            // Place where button should be placed
             var row = document.getElementsByClassName(place);
+            // Place button infront of there
             row[0].prepend(buttonHolder);
 
             this.setText = function(newText) {
@@ -93,13 +105,22 @@
 
         // Check if groupLevel is actually there
         if(groupLevel() != null) {
+            // Create button with these parameters
             var helperButton = new Button("green", "Accept level " + groupLevel() + "+", "joinRequestManageButtons");
         }
 
-        $J(".lchhelper").click(function(){ joinRequestsManage(); });
+        // Simple function to check if the button was pressed and disable that button afterwards
+        var isDisabled = false;
+        $J(".lchhelper").click(function(){
+            if(isDisabled === false) {
+                joinRequestsManage();
+                isDisabled = true;
+            }
+        });
 
         // Automatically get the level of this group
         function groupLevel() {
+            // Get URL
             var url = window.location.href;
             // Get the digits in that URL
             var groupLevel = url.match(/\d/g);
@@ -123,8 +144,10 @@
                 helperButton.setText("No join requests");
                 console.log("No join requests");
 
+                // Redirect
                 Redirect();
 
+                // Throw error and stop execution of JavaScript
                 throw new Error("No join requests");
             }
 
@@ -161,8 +184,8 @@
 
             // Get parameters to send to the Steam API
             var getRequestParams = {
-                key: apikey,
-                steamid: steamid
+                key: apikey, // API key defined in global vars
+                steamid: steamid // SteamID from function
             };
 
             // Show params in the console (debug)
@@ -199,6 +222,7 @@
             return level;
         }
 
+        // Actually send the requests to Steam to accept or deny users
         function ApproveDenyUser() {
             // Params for approve request
             var approveUserParams = {
@@ -214,6 +238,7 @@
                 rgAccounts: deniedAccounts // Array of denied accounts
             };
 
+            // Doesn't execute when debug is enabled, nothing really happens
             if(debug === 0) {
                 helperButton.setText("Sending requests");
 
@@ -235,11 +260,13 @@
                         async: false
                     });
                 }
-
+                
+                // Redirect
                 Redirect();
             }
         }
 
+        // Function to get the level needed for this group
         function getNeededLevel() {
             neededLevel = groupLevel();
             attempt += 1;
@@ -261,13 +288,18 @@
             }
         }
 
+        // Main function
         function joinRequestsManage() {
             helperButton.setText("Busy...");
 
+            // Get array of users to iterate over
             var iterate = checkInvites();
+            // Set neededLevel to arbirary high number for safety
             var neededLevel = 9999;
+            // Set attempt to 0 for the getNeededLevel() function
             var attempt = 0;
 
+            // Call getNeededLevel()
             getNeededLevel();
 
             // Iterate over all users
@@ -288,19 +320,24 @@
 
                 // Check if level is higher than the needed level
                 if(level >= neededLevel) {
+                    // Approve account and add to array of approvedAccounts
                     approvedAccounts.push(item);
                 } else {
+                    // Deny account and add to the array of deniedAccounts
                     deniedAccounts.push(item);
                 }
             });
 
+            // Call ApproveDenyUser()
             ApproveDenyUser();
         }
 
         // Check mode for automation
         var mode = getUrlParameter('mode');
 
+        // If the mode is auto, automatically execute joinRequestsManage() and disable the button
         if(mode == 'auto') {
+            isDisabled = true;
             joinRequestsManage();
             mode = '?mode=auto';
         } else {

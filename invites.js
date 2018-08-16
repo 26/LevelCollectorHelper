@@ -44,6 +44,11 @@
                 }
             }
         };
+        
+        // Reload
+        function Reload() {
+            location.reload();
+        }
 
         // Function to redirect you to the next Level Collectors group
         function Redirect() {
@@ -54,20 +59,15 @@
 
                 if (nextItem == null) {
                     // Just reload when nothing was found
-                    location.reload();
+                    Reload();
                 } else {
                     // Redirect to the next group if it exists
                     window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage" + mode;
                 }
             } else {
                 // Just reload when nothing was found
-                location.reload();
+                Reload();
             }
-        }
-
-        // Reload
-        function Reload() {
-            location.reload();
         }
 
         // Button source code from gemify.js by user SleepyAkubi on GitHub (edited by me)

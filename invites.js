@@ -46,13 +46,15 @@
 
     // Reload
     function Reload() {
-        location.reload();
+        if(debug === 0) {
+            location.reload();
+        }
     }
 
     // Function to redirect you to the next Level Collectors group
     function Redirect() {
         // Do not redirect if it is the last group (level 1000)
-        if(groupname != 'leveI1000coIIector') {
+        if((groupname != 'leveI1000coIIector') && (debug === 0)) {
             // Get next item in the groups array
             var index = groups.indexOf(groupname);
             if(index >= 0 && index < groups.length - 1) {

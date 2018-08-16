@@ -44,7 +44,7 @@
                 }
             }
         };
-        
+
         // Reload
         function Reload() {
             location.reload();
@@ -84,7 +84,7 @@
             span = document.createElement('span');
             span.innerHTML = text;
             span.className = "";
-            
+
             // Append the span inside of the anchor
             buttonHolder.appendChild(span);
 
@@ -136,16 +136,13 @@
 
             // Show that array in the console (debug)
             if(debug === 1) {
-                console.log("data-miniprofile array:" + miniprofiles);
+                console.log("miniprofiles (checkInvites): " + miniprofiles);
             }
 
             if (miniprofiles === undefined || miniprofiles.length == 0) {
                 // Array empty or does not exist
                 helperButton.setText("No join requests");
                 console.log("No join requests");
-
-                // Redirect
-                Redirect();
 
                 // Throw error and stop execution of JavaScript
                 throw new Error("No join requests");
@@ -162,7 +159,7 @@
 
             // Show that psuedoid in the console (debug)
             if(debug === 1) {
-                console.log("PsuedoID64 (" + miniprofile + "):" + id);
+                console.log("psuedoid (convertID, " + miniprofile + "): " + id);
             }
 
             // Add part of the ID that CANNOT change as string (JavaScript cannot handle numbers higher than 9,007,199,254,740,991)
@@ -170,7 +167,7 @@
 
             // Show the full SteamID64 in the console (debug)
             if(debug === 1) {
-                console.log("SteamID64 (" + miniprofile + "):" + id);
+                console.log("id (convertID, " + miniprofile + "): " + id);
             }
 
             // Return ID as string
@@ -190,7 +187,7 @@
 
             // Show params in the console (debug)
             if(debug === 1) {
-                console.log("getRequestParams (" + steamid + "):" + getRequestParams);
+                console.log("getRequestParams (getLevel, " + steamid + "): " + getRequestParams);
             }
 
             // Send AJAX request to Steam API function GetSteamLevel
@@ -202,7 +199,7 @@
                 success: function(data) {
                     // Show raw AJAX data in console (debug)
                     if(debug === 1) {
-                        console.log("AJAX data (" + steamid + "):" + data);
+                        console.log("data (getLevel, " + steamid + "): " + data);
                     }
 
                     // Change level to actual level
@@ -260,18 +257,28 @@
                         async: false
                     });
                 }
-                
+
                 // Redirect
                 Redirect();
+            } else {
+                console.log("approveUserParams (ApproveDenyUser): " + approveUserParams);
+                console.log("deniedUserParams (ApproveDenyUser): " + deniedUserParams);
+
+                helperButton.setText("Debug finished");
             }
         }
 
+        // Set attempt to 0 for the getNeededLevel() function
+        var attempt = 0;
         // Function to get the level needed for this group
         function getNeededLevel() {
-            neededLevel = groupLevel();
-            attempt += 1;
+            // Set neededLevel to arbitrary high number for safety
+            var neededLevel = 9999;
 
             helperButton.setText("Getting level needed");
+
+            neededLevel = groupLevel();
+            attempt += 1;
 
             if(neededLevel < 10 || neededLevel > 1001 || neededLevel == null) {
                 if(attempt <= 5) {
@@ -281,26 +288,36 @@
                     helperButton.setText("Error getting required level");
                     console.log("Something went wrong getting group level. Please refresh and retry manually.");
 
-                    Reload();
+                    helperButton.setText("Error getting group's level");
 
                     throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
                 }
             }
+
+            if(debug === 1) {
+                console.log('neededLevel (getNeededLevel): ' + neededLevel);
+            }
+
+            return neededLevel;
         }
 
         // Main function
         function joinRequestsManage() {
             helperButton.setText("Busy...");
 
+            if(apikey === '') {
+                helperButton.setText("Missing API key");
+                console.log("Missing API key");
+
+                // Throw error and stop execution of JavaScript
+                throw new Error("Missing API key");
+            }
+
             // Get array of users to iterate over
             var iterate = checkInvites();
-            // Set neededLevel to arbirary high number for safety
-            var neededLevel = 9999;
-            // Set attempt to 0 for the getNeededLevel() function
-            var attempt = 0;
 
             // Call getNeededLevel()
-            getNeededLevel();
+            var neededLevel = getNeededLevel();
 
             // Iterate over all users
             jQuery.each(iterate, function(index, item) {
@@ -319,7 +336,7 @@
                 }
 
                 // Check if level is higher than the needed level
-                if(level >= neededLevel) {
+                if(level >= neededLevel && neededLevel !== null) {
                     // Approve account and add to array of approvedAccounts
                     approvedAccounts.push(item);
                 } else {
@@ -327,6 +344,11 @@
                     deniedAccounts.push(item);
                 }
             });
+
+            if(debug === 1) {
+                console.log('approvedAccounts (joinRequestsManage): ' + approvedAccounts);
+                console.log('deniedAccounts (joinRequestsManage): ' + deniedAccounts);
+            }
 
             // Call ApproveDenyUser()
             ApproveDenyUser();

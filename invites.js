@@ -51,21 +51,24 @@
 
     // Function to redirect you to the next Level Collectors group
     function Redirect() {
-        // Get next item in the groups array
-        var index = groups.indexOf(groupname);
-        if(index >= 0 && index < groups.length - 1) {
-            var nextItem = groups[index + 1];
+        // Do not redirect if it is the last group (level 1000)
+        if(groupname != 'leveI1000coIIector') {
+            // Get next item in the groups array
+            var index = groups.indexOf(groupname);
+            if(index >= 0 && index < groups.length - 1) {
+                var nextItem = groups[index + 1];
 
-            if (nextItem == null) {
+                if (nextItem == null) {
+                    // Just reload when nothing was found
+                    Reload();
+                } else {
+                    // Redirect to the next group if it exists
+                    window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage" + mode;
+                }
+            } else {
                 // Just reload when nothing was found
                 Reload();
-            } else {
-                // Redirect to the next group if it exists
-                window.location.href = "https://steamcommunity.com/groups/" + nextItem + "/joinRequestsManage" + mode;
             }
-        } else {
-            // Just reload when nothing was found
-            Reload();
         }
     }
 

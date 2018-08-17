@@ -261,8 +261,6 @@
         }
     }
 
-    // Set attempt to 0 for the getNeededLevel() function
-    var attempt = 0;
     // Function to get the level needed for this group
     function getNeededLevel() {
         // Set neededLevel to arbitrary high number for safety
@@ -274,17 +272,10 @@
         attempt += 1;
 
         if(neededLevel < 10 || neededLevel > 1001 || neededLevel == null) {
-            if(attempt <= 5) {
-                console.log("Something went wrong getting group level, retrying... (" + attempt + " / 5)");
-                getNeededLevel();
-            } else {
-                helperButton.setText("Error getting required level");
-                console.log("Something went wrong getting group level. Please refresh and retry manually.");
+            helperButton.setText("Error getting required level");
+            console.log("Something went wrong getting group level. Please refresh and retry manually.");
 
-                helperButton.setText("Error getting group's level");
-
-                throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
-            }
+            throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
         }
 
         if(debug === 1) {

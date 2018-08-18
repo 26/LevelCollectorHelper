@@ -11,11 +11,19 @@
 (function() {
     'use strict';
 
-    // USER CHANGEABLE VARS (DO NOT CHANGE ANYTHING ELSE)
+    // USER CHANGEABLE STUFF (DO NOT CHANGE ANYTHING ELSE OR YOU RISK ACCIDENTAL ACCEPTS/DENIES)
+
     const apikey = ''; // ENTER STEAM API KEY HERE (https://steamcommunity.com/dev/apikey)
     const debug = 0; // Used for debugging
     const ignoreDenyUsers = 0; // Variable to IGNORE or DENY users that don't meet the required level (deny means the user cannot request to join again for some time, ignore means the join request remains open) (1 = IGNORE, 0 = DENY)
-    // END OF USER CHANGEABLE VARS
+
+    // END OF USER CHANGEABLE STUFF
+
+    /*
+       ------------------------------------
+        DO NOT CHANGE ANYTHING BELOW THIS!
+       ------------------------------------
+    */
 
     // Global stuff
     var approvedAccounts = []; // Empty on default

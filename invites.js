@@ -133,8 +133,12 @@
             helperButton.setText("No join requests");
             console.log("No join requests");
 
-            // Throw error and stop execution of JavaScript
-            throw new Error("No join requests");
+            if(mode == '') {
+                // Throw error and stop execution of JavaScript
+                throw new Error("No join requests");
+            } else {
+                Redirect();
+            }
         }
 
         // Return array of profiles
@@ -251,6 +255,8 @@
                 });
             }
 
+            helperButton.setText("Finished. Redirecting...");
+
             // Redirect
             Redirect();
         } else {
@@ -269,13 +275,16 @@
         helperButton.setText("Getting level needed");
 
         neededLevel = groupLevel();
-        attempt += 1;
 
         if(neededLevel < 10 || neededLevel > 1001 || neededLevel == null) {
             helperButton.setText("Error getting required level");
-            console.log("Something went wrong getting group level. Please refresh and retry manually.");
+            console.log("Something went wrong getting group level.");
 
-            throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
+            if(mode == '') {
+                throw new Error("Something went wrong getting group level. Please refresh and retry manually.");
+            } else {
+                Redirect();
+            }
         }
 
         if(debug === 1) {
@@ -288,14 +297,6 @@
     // Main function
     function joinRequestsManage() {
         helperButton.setText("Busy...");
-
-        if(apikey === '') {
-            helperButton.setText("Missing API key");
-            console.log("Missing API key");
-
-            // Throw error and stop execution of JavaScript
-            throw new Error("Missing API key");
-        }
 
         // Get array of users to iterate over
         var iterate = checkInvites();
@@ -314,13 +315,13 @@
             var level = getLevel(id);
 
             // Check if level is legit
-            if(level == "failed") {
+            if(level == "failed" || level == '' || level == null) {
                 console.log("Something went wrong for user " + item + ". Skipping.");
                 return true;
             }
 
             // Check if level is higher than the needed level
-            if(level >= neededLevel && neededLevel !== null) {
+            if(level >= neededLevel) {
                 // Approve account and add to array of approvedAccounts
                 approvedAccounts.push(item);
             } else {
@@ -340,11 +341,17 @@
 
     // Check whether the page the user is on right now is actually a level collectors page
     if(jQuery.inArray(groupname, groups) !== -1) {
-        // Check if groupLevel is actually there
-        if(groupLevel() != null) {
-            // Create button with these parameters
-            var helperButton = new Button("green", "Accept level " + groupLevel() + "+", "joinRequestManageButtons");
+        // Check if API key was entered
+        if(apikey === '' || apikey === null) {
+            helperButton.setText("Missing API key");
+            console.log("Missing API key");
+
+            // Throw error and stop execution of JavaScript
+            throw new Error("Missing API key");
         }
+
+        // Create button with these parameters
+        var helperButton = new Button("green", "Accept level " + groupLevel() + "+", "joinRequestManageButtons");
 
         // Simple function to check if the button was pressed and disable that button afterwards
         var isDisabled = false;

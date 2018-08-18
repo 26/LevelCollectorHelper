@@ -349,6 +349,9 @@
 
     // Check whether the page the user is on right now is actually a level collectors page
     if(jQuery.inArray(groupname, groups) !== -1) {
+        // Create button with these parameters
+        var helperButton = new Button("green", "Accept level " + groupLevel() + "+", "joinRequestManageButtons");
+
         // Check if API key was entered
         if(apikey === '' || apikey === null) {
             helperButton.setText("Missing API key");
@@ -357,9 +360,6 @@
             // Throw error and stop execution of JavaScript
             throw new Error("Missing API key");
         }
-
-        // Create button with these parameters
-        var helperButton = new Button("green", "Accept level " + groupLevel() + "+", "joinRequestManageButtons");
 
         // Simple function to check if the button was pressed and disable that button afterwards
         var isDisabled = false;

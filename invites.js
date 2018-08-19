@@ -84,16 +84,13 @@
 
     // Button source code from gemify.js by user SleepyAkubi on GitHub (edited by me)
     function Button(colour, text, place) {
-        // Define span
-        var span = null;
-
         // Create new anchor element
         var buttonHolder = document.createElement('a');
         // Give said element some colours
         buttonHolder.className = "btnv6_blue_blue_innerfade btn_details btn_small lchhelper";
 
         // Create new span element
-        span = document.createElement('span');
+        var span = document.createElement('span');
         span.innerHTML = text;
         span.className = "";
 
